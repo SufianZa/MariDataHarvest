@@ -158,7 +158,7 @@ def try_get_data(url):
         CheckConnection.is_online()
         return xr.open_dataset(read_bytes)
     except Exception as e:
-        print(e)
+        logger.error(traceback.format_exc())
         raise ValueError('Error:', BeautifulSoup(read_bytes, 'html.parser').find('p', {"class": "error"}), 'Request: ',
                          url, response)
 
@@ -388,8 +388,7 @@ def append_to_csv(in_path: Path, out_path: Path) -> None:
                 header = False
     except Exception as e:
         # discard the file in case of an error to resume later properly
-        if out_path:
-            out_path.unlink(missing_ok=True)
+        out_path.unlink(missing_ok=True)
         raise e
 
 
